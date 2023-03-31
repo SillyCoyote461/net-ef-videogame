@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
-public record class Videogame
+[Table("videogames")]
+[Index(nameof(Id), IsUnique = true)]
+public class Videogame
 {
-    public long? Id { get; set; }
+    public long Id { get; set; }
     public string Name { get; set; }
     public string Overview { get; set; }
     public DateTime ReleaseDate { get; set; }
-    public long SoftwareHouse { get; set; }
-
-    public Videogame(long? id, string name, string overview, DateTime releaseDate, long softwareHouse)
-    {
-        Id = id;
-        Name = name;
-        Overview = overview;
-        ReleaseDate = releaseDate;
-        SoftwareHouse = softwareHouse;
-    }
+    public long HouseId { get; set; }
+    public SoftwareHouse SoftwareHouse { get; set; }
 }
 

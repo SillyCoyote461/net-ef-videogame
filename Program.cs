@@ -3,8 +3,7 @@
 var nl = Environment.NewLine;
 var line = $"-----------------------------";
 bool execute = true;
-string connStr = "Data Source=localhost;Initial Catalog=db_videogame;Integrated Security=True";
-VideogameManager Manager = new VideogameManager(connStr);
+var context = new VideogameContext();
 
 while (execute)
 {
@@ -12,7 +11,7 @@ while (execute)
         $"Lista comandi: {nl}" +
         $"FILTER -> Ricerca giochi per nome.{nl}" +
         $"SEARCH -> Cerca gioco per ID. {nl}" +
-        $"ADD ->  Aggiungi gioco alla lista.{nl}" +
+        $"ADD ->  Aggiungi gioco o software house alla lista.{nl}" +
         $"DELETE -> Elimina gioco dalla lista.{nl}" +
         $"EXIT -> Chiudi il programma.");
 
@@ -33,12 +32,11 @@ while (execute)
             $"Inserisci nome gioco: ");
             cmd = Console.ReadLine() ?? "";
 
-            var videogameList = Manager.FilterGame(cmd);
-            foreach (var v in videogameList)
-            {
-                Console.WriteLine(v);
-            }
-            Console.WriteLine(line);
+            //foreach (var v in videogameList)
+            //{
+            //    Console.WriteLine(v);
+            //}
+            //Console.WriteLine(line);
             break;
 
         //SEARCH GAME
@@ -48,23 +46,41 @@ while (execute)
                 $"Inserisci ID gioco: ");
             cmd = Console.ReadLine() ?? "";
 
-            var videogame = Manager.SearchGame(cmd);
-            Console.WriteLine($"{videogame}{nl}{line}");
+            //Console.WriteLine($"{videogame}{nl}{line}");
             break;
 
         //ADD GAME
         case "add":
-            Console.Write(
-            $"{line}{nl}" +
-            $"Inserisci nome gioco: ");
-            string name = Console.ReadLine() ?? "";
-            Console.Write($"Inserisci descrizione gioco: ");
-            string overview = Console.ReadLine() ?? "";
-            Console.Write("Inserisci Id della software house: ");
-            long softHouse = Convert.ToInt64(Console.ReadLine());
-            var date = DateTime.Now;
-            Videogame newVg = new Videogame(null, name, overview, date, softHouse);
-            Manager.AddGame(newVg);
+            Console.WriteLine("Cosa vuoi aggiungere? (videogame / software house)");
+            cmd = Console.ReadLine();
+            if(cmd == "videogame")
+            {
+                Console.Write(
+                $"{line}{nl}" +
+                $"Inserisci nome gioco: ");
+                string name = Console.ReadLine() ?? "";
+                Console.Write($"Inserisci descrizione gioco: ");
+                string overview = Console.ReadLine() ?? "";
+                Console.Write("Inserisci Id della software house: ");
+                long softHouse = Convert.ToInt64(Console.ReadLine());
+                var date = DateTime.Now;
+
+            }
+            else if(cmd == "software house")
+            {
+                var sh = new SoftwareHouse();
+                Console.Write("Inserisci nome: ");
+                sh.Name = Console.ReadLine();
+                Console.Write("Inserisci nazione: ");
+                sh.Country = Console.ReadLine();
+                Console.Write("Inserisci cittá: ");
+                sh.City = Console.ReadLine();
+                Console.Write("Inserisci partita iva: ");
+                sh.TaxId = Convert.ToInt64(Console.ReadLine());
+                
+                context.SoftwareHouse.Add( sh );
+                context.SaveChanges();
+            }
             Console.WriteLine(line);
             break;
 
@@ -74,7 +90,7 @@ while (execute)
             $"{line}{nl}" +
             $"Inserisci nome gioco: ");
             long id = Convert.ToInt64(Console.ReadLine());
-            Manager.DeleteGame(id);
+
             Console.WriteLine(line);    
             break;
 
