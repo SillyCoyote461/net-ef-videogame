@@ -15,8 +15,18 @@ public class Videogame
     public long Id { get; set; }
     public string Name { get; set; }
     public string Overview { get; set; }
-    public DateTime ReleaseDate { get; set; }
-    public long HouseId { get; set; }
+    public DateTime Release_Date { get; set; }
+    public long SoftwareHouseId { get; set; }
     public SoftwareHouse SoftwareHouse { get; set; }
+
+    public override string ToString()
+    {
+        var nl = Environment.NewLine;
+        return $"Id: {Id} {nl}" +
+            $"Name: {Name} {nl}" +
+            $"Overview: {Overview}{nl}" +
+            $"Release date: {Release_Date}{nl}" +
+            $"Software house id: {SoftwareHouseId}";
+    }
 }
 

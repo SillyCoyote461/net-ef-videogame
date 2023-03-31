@@ -1,3 +1,3 @@
 ﻿SELECT *
-FROM SoftwareHouse
+FROM videogames
 ORDER BY id DESC
